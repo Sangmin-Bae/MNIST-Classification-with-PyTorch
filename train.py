@@ -7,6 +7,8 @@ import torch.optim as optim
 
 from model.fcnn_model import FullyConnectedClassifier
 
+from trainer import Trainer
+
 from utils import load_data, split_data
 
 
@@ -37,7 +39,7 @@ def main(config):
     print(f"Valid - {x[1].shape} / {y[1].shape}")
 
     input_size = int(x[0].size(-1))
-    output_size = int(max(y[0]))
+    output_size = int(max(y[0])) + 1
 
     # set model, optimizer, crit
     model = FullyConnectedClassifier(input_size, output_size).to(device)
@@ -48,6 +50,19 @@ def main(config):
     print(crit)
 
     # train
+    trainer = Trainer(model, optimizer, crit)
+    trainer.train(
+        train_data=(x[0], y[0]),
+        valid_data=(x[1], y[1]),
+        config=config
+    )
+
+    # save model weight
+    torch.save({
+        'model': trainer.model.state_dict(),
+        'opt': optimizer.state_dict(),
+        'config': config,
+    }, config.model_fn)
 
 
 if __name__ == "__main__":
