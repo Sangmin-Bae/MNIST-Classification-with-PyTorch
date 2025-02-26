@@ -3,7 +3,7 @@ import yaml
 
 import torch
 
-from utils import load_data
+from utils import load_data, split_data
 
 
 def arguments_parser():
@@ -24,10 +24,13 @@ def load_config(path):
 def main(config):
     # set device
     device = torch.device("cpu") if config.gpu_id < 0 and not torch.cuda.is_available() else torch.device(f"cuda:{config.gpu_id}")
-    print(f"device - {device}\n")
+    print(f"device - {device}")
 
     # load data
     x, y = load_data(is_train=True, flatten=True)
+    x, y = split_data(x.to(device), y.to(device), device, config.train_ratio)
+    print(f"Train - {x[0].shape} / {y[0].shape}")
+    print(f"Valid - {x[1].shape} / {y[1].shape}")
 
 if __name__ == "__main__":
     args = arguments_parser()
