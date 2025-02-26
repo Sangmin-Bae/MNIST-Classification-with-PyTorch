@@ -3,6 +3,8 @@ import yaml
 
 import torch
 
+from utils import load_data
+
 
 def arguments_parser():
     p = argparse.ArgumentParser()
@@ -25,6 +27,7 @@ def main(config):
     print(f"device - {device}\n")
 
     # load data
+    x, y = load_data(is_train=True, flatten=True)
 
 if __name__ == "__main__":
     args = arguments_parser()
