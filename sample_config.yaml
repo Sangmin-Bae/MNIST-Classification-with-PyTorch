@@ -1,0 +1,14 @@
+# will save model weight file path
+model_fn: ./weight.pth
+# cuda gpu device id
+gpu_id: 0
+# train data ratio of train/valid ratios
+train_ratio: .8
+# number of epochs
+n_epochs: 1000
+# batch size for train, validate iteration
+batch_size: 256
+# if no validation loss change, counter for early stop
+early_stop: 50
+# print interval for intermediate results
+print_interval: 10
