@@ -81,5 +81,6 @@ class Trainer:
                     print(f"There is no improvement during last {config.early_stop} epochs.")
                     break
 
+        print(f"The best validation loss from epoch {lowest_epoch + 1}: {lowest_epoch:.4e}")
         # restore best model weight
         self.model.load_state_dict(best_model)
