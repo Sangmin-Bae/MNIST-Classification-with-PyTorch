@@ -2,6 +2,10 @@ import argparse
 import yaml
 
 import torch
+import torch.nn as nn
+import torch.optim as optim
+
+from model.fcnn_model import FullyConnectedClassifier
 
 from utils import load_data, split_data
 
@@ -23,7 +27,7 @@ def load_config(path):
 
 def main(config):
     # set device
-    device = torch.device("cpu") if config.gpu_id < 0 and not torch.cuda.is_available() else torch.device(f"cuda:{config.gpu_id}")
+    device = torch.device(f"cuda:{config.gpu_id}") if config.gpu_id >= 0 and torch.cuda.is_available() else torch.device("cpu")
     print(f"device - {device}")
 
     # load data
@@ -31,6 +35,20 @@ def main(config):
     x, y = split_data(x.to(device), y.to(device), device, config.train_ratio)
     print(f"Train - {x[0].shape} / {y[0].shape}")
     print(f"Valid - {x[1].shape} / {y[1].shape}")
+
+    input_size = int(x[0].size(-1))
+    output_size = int(max(y[0]))
+
+    # set model, optimizer, crit
+    model = FullyConnectedClassifier(input_size, output_size).to(device)
+    optimizer = optim.Adam(model.parameters())
+    crit = nn.NLLLoss()
+    print(model)
+    print(optimizer)
+    print(crit)
+
+    # train
+
 
 if __name__ == "__main__":
     args = arguments_parser()
