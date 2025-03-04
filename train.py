@@ -1,6 +1,8 @@
 import argparse
 import yaml
 
+import torch
+
 
 def args_parse():
     p = argparse.ArgumentParser()
@@ -20,7 +22,8 @@ def load_config(path):
 
 
 def main(config):
-    pass
+    # set device
+    device = torch.device("cpu") if config.gpu_id < 0 else torch.device(f"cuda:{config.gpu_id}")
 
 
 if __name__ == "__main__":
