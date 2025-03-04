@@ -3,6 +3,8 @@ import yaml
 
 import torch
 
+from utils import load_data, split_data
+
 
 def args_parse():
     p = argparse.ArgumentParser()
@@ -24,6 +26,10 @@ def load_config(path):
 def main(config):
     # set device
     device = torch.device("cpu") if config.gpu_id < 0 else torch.device(f"cuda:{config.gpu_id}")
+
+    # load and split data into train/valid data
+    x, y = load_data(is_train=True, flatten=True)
+    x, y = split_data(x.to(device), y.to(device), device, train_ratio=config.train_ratio)
 
 
 if __name__ == "__main__":
