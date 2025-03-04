@@ -2,3 +2,5 @@
 
 ### Directory ###
 .idea/
+config/
+weights/
