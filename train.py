@@ -2,7 +2,10 @@ import argparse
 import yaml
 
 import torch
+import torch.nn as nn
+import torch.optim as optim
 
+from model import FullyConnectedClassifier
 from utils import load_data, split_data
 
 
@@ -30,6 +33,14 @@ def main(config):
     # load and split data into train/valid data
     x, y = load_data(is_train=True, flatten=True)
     x, y = split_data(x.to(device), y.to(device), device, train_ratio=config.train_ratio)
+
+    input_size = int(x.size(0))
+    output_size = int(max(y)) + 1
+
+    # set model, optimizer, criterion
+    model = FullyConnectedClassifier(input_size, output_size).to(device)
+    optimizer = optim.Adam(model.parameters())
+    crit = nn.CrossEntropyLoss()
 
 
 if __name__ == "__main__":
