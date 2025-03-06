@@ -24,9 +24,11 @@ class FullyConnectedClassifier(nn.Module):
             nn.LeakyReLU(),
             nn.Linear(50, output_size)
         )
-        self.act = nn.Softmax(dim=-1)
+        self.act = nn.LogSoftmax(dim=-1)
 
     def forward(self, x):
         # |x| = (batch_size, input_size)
         y = self.act(self.layers(x))
         # |y| = (batch_size, output_size)
+
+        return y
