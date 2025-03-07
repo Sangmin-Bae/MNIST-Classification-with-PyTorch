@@ -46,7 +46,7 @@ def main(config):
     output_size = int(max(y[0])) + 1
 
     # set model, optimizer, criterion
-    model = FullyConnectedClassifier(input_size, output_size).to(device)
+    model = FullyConnectedClassifier(input_size, output_size, config.use_batch_norm, config.dropout_p).to(device)
     optimizer = optim.Adam(model.parameters())
     crit = nn.NLLLoss()
 
