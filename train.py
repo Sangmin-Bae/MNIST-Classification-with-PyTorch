@@ -7,7 +7,7 @@ import torch.optim as optim
 
 from model import FullyConnectedClassifier
 from trainer import Trainer
-from utils import load_data, split_data
+from data_loader import get_loaders
 
 
 def args_parse():
@@ -35,15 +35,17 @@ def main(config):
     device = torch.device("cpu") if config.gpu_id < 0 else torch.device(f"cuda:{config.gpu_id}")
     info += f"device: {device}\n"
 
-    # load and split data into train/valid data
-    x, y = load_data(is_train=True, flatten=True)
-    x, y = split_data(x.to(device), y.to(device), device, train_ratio=config.train_ratio)
-    info += "[train/valid data shape]\n"
-    info += f"train: {x[0].shape}/{y[0].shape}\n"
-    info += f"valid: {x[1].shape}/{y[1].shape}\n"
+    # load train/valid/test data loader
+    train_loader, valid_loader, test_loader = get_loaders(device, config)
 
-    input_size = int(x[0].size(-1))
-    output_size = int(max(y[0])) + 1
+    info += f"train: {len(train_loader.dataset)}\n"
+    info += f"valid: {len(valid_loader.dataset)}\n"
+    info += f"test: {len(test_loader.dataset)}\n"
+
+    # get input/output size
+    x, y = next(iter(train_loader))
+    input_size = int(x.size(-1))
+    output_size = int(max(y)) + 1
 
     # set model, optimizer, criterion
     model = FullyConnectedClassifier(input_size, output_size, config.use_batch_norm, config.dropout_p).to(device)
@@ -62,8 +64,8 @@ def main(config):
 
     # train model
     trainer.train(
-        train_data=(x[0], y[0]),
-        valid_data=(x[1], y[1]),
+        train_loader=train_loader,
+        valid_loader=valid_loader,
         config=config
     )
 
