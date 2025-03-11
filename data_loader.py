@@ -84,7 +84,7 @@ def get_loaders(config):
         shuffle=True
     )
     test_loader = DataLoader(
-        dataset=MNISTDataset(test_x, test_y, flatten=True),
+        dataset=MNISTDataset(test_x, test_y, flatten=False),
         batch_size=config.batch_size,
         shuffle=True
     )
