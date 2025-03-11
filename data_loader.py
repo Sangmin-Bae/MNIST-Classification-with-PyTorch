@@ -27,7 +27,7 @@ class MNISTDataset(Dataset):
         return x, y
 
 
-def load_mnist(is_train=True):
+def load_mnist(is_train=True, flatten=False):
     """ MNIST train/valid 데이터 불러오기 """
     from torchvision import datasets, transforms
 
@@ -44,6 +44,10 @@ def load_mnist(is_train=True):
     # MinMax Scaling
     x = dataset.data.float() / 255.
     y = dataset.targets
+
+    # flatten
+    if flatten:
+        x = x.view(x.size(0), -1)
 
     return x, y
 

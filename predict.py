@@ -3,7 +3,7 @@ import argparse
 import torch
 
 from model import FullyConnectedClassifier
-from utils import load_data
+from data_loader import load_mnist
 
 
 def args_parse():
@@ -38,7 +38,7 @@ def main(config):
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     # load test data
-    x, y = load_data(is_train=False, flatten=True)
+    x, y = load_mnist(is_train=False, flatten=True)
 
     input_size = int(x.size(-1))
     output_size = int(max(y)) + 1
