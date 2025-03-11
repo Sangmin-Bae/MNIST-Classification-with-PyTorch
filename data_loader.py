@@ -5,9 +5,9 @@ from torch.utils.data import Dataset, DataLoader
 
 class MNISTDataset(Dataset):
     """ CustomDataset Class for MNIST dataset """
-    def __init__(self, data, labels, flatten=True):
-        self.data = data
-        self.labels = labels
+    def __init__(self, data, labels, device, flatten=True):
+        self.data = data.to(device)
+        self.labels = labels.to(device)
         self.flatten = flatten
 
         super().__init__()
@@ -62,7 +62,7 @@ def split_data(x, y, config):
     return x[0], y[0], x[1], y[1]
 
 
-def get_loaders(config):
+def get_loaders(device, config):
     # load MNIST train data
     x, y = load_mnist(is_train=True)
 
@@ -74,17 +74,17 @@ def get_loaders(config):
 
     # set data loaders
     train_loader = DataLoader(
-        dataset=MNISTDataset(train_x, train_y, flatten=True),
+        dataset=MNISTDataset(train_x, train_y, device, flatten=True),
         batch_size=config.batch_size,
         shuffle=True
     )
     valid_loader = DataLoader(
-        dataset=MNISTDataset(valid_x, valid_y, flatten=True),
+        dataset=MNISTDataset(valid_x, valid_y, device, flatten=True),
         batch_size=config.batch_size,
         shuffle=True
     )
     test_loader = DataLoader(
-        dataset=MNISTDataset(test_x, test_y, flatten=False),
+        dataset=MNISTDataset(test_x, test_y, device, flatten=False),
         batch_size=config.batch_size,
         shuffle=True
     )
