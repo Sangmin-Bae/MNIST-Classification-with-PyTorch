@@ -41,7 +41,3 @@ def split_data(x, y, device, train_ratio=0.8):
     y = torch.index_select(y, dim=0, index=indices).split([train_cnt, valid_cnt], dim=0)
 
     return x, y
-
-if __name__ == "__main__":
-    x, y = load_data(True, True)
-    x_, y_ = split_data(x, y, torch.device('cpu'))
