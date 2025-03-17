@@ -6,7 +6,7 @@ import torch
 from ignite.engine import Engine
 from ignite.engine import Events
 from ignite.metrics import RunningAverage
-from ignite.contrib.handlers.tqdm_logger import ProgressBar
+from ignite.handlers.tqdm_logger import ProgressBar
 
 from utils import get_grad_norm, get_parameter_norm
 
