@@ -60,21 +60,10 @@ def main(config):
     print(info)
 
     # set trainer
-    trainer = Trainer(model, optimizer, crit)
+    trainer = Trainer(config)
 
     # train model
-    trainer.train(
-        train_loader=train_loader,
-        valid_loader=valid_loader,
-        config=config
-    )
-
-    # save best model weights
-    torch.save({
-        'model': trainer.model.state_dict(),
-        'opt': trainer.optimizer.state_dict(),
-        'config': config,
-    }, config.weight_fn)
+    trainer.train(model, crit, optimizer, train_loader, valid_loader)
 
 
 if __name__ == "__main__":
