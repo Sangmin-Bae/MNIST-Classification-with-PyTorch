@@ -8,10 +8,9 @@ train_ratio : .8
 n_epochs : 1000
 # number of batch size[int]
 batch_size : 256
-# epoch num for early stop, if lowest valid loss no change
-early_stop : 50
 # either use batch normalization
 use_batch_norm : True
 # if the use_batch_norm is False, model use dropout. So you should set dropout probability(p-hyperparameter)
 dropout_p : .3
-
+# steps to print standard output in the train/valid process
+verbose: 1
