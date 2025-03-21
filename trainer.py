@@ -158,7 +158,7 @@ class Trainer:
 
         train_engine.add_event_handler(Events.EPOCH_COMPLETED, run_validation, validate_engine, valid_loader)
         validate_engine.add_event_handler(Events.EPOCH_COMPLETED, MyEngine.check_best)
-        validate_engine.add_event_handler(Events.EPOCH_COMPLETED, MyEngine.save_model, train_engine, self.config)
+        validate_engine.add_event_handler(Events.EPOCH_COMPLETED, MyEngine.save_model, self.config)
 
         train_engine.run(train_loader, max_epochs=self.config.n_epochs)
 

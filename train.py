@@ -5,9 +5,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from model import FullyConnectedClassifier
 from trainer import Trainer
 from data_loader import get_loaders
+from utils import get_model
 
 
 def args_parse():
@@ -48,7 +48,7 @@ def main(config):
     output_size = int(max(y)) + 1
 
     # set model, optimizer, criterion
-    model = FullyConnectedClassifier(input_size, output_size, config.use_batch_norm, config.dropout_p).to(device)
+    model = get_model(config).to(device)
     optimizer = optim.Adam(model.parameters())
     crit = nn.NLLLoss()
 

@@ -2,8 +2,8 @@ import argparse
 
 import torch
 
-from model import FullyConnectedClassifier
 from data_loader import load_mnist
+from utils import get_model
 
 
 def args_parse():
@@ -17,7 +17,7 @@ def args_parse():
 def load(fn, device):
     d = torch.load(fn, map_location=device, weights_only=False)
 
-    return d["model"]
+    return d["model"], d["config"]
 
 
 def test(model, x, y):
@@ -37,17 +37,17 @@ def main(config):
     # set device
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
+    # load best model weight and config
+    model_weight, train_config = load(config.weight_fn, device)
+
     # load test data
-    x, y = load_mnist(is_train=False, flatten=True)
+    x, y = load_mnist(is_train=False, flatten=True if train_config.model == "fc" else False)
 
     input_size = int(x.size(-1))
     output_size = int(max(y)) + 1
 
     # set model
-    model = FullyConnectedClassifier(input_size, output_size).to(device)
-
-    # load best model weight
-    model_weight = load(config.weight_fn, device)
+    model = get_model(train_config).to(device)
     model.load_state_dict(model_weight)
 
     # test

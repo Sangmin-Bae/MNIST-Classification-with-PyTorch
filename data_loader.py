@@ -73,22 +73,25 @@ def get_loaders(device, config):
     # shuffle and split data
     train_x, train_y, valid_x, valid_y = split_data(x, y, config)
 
+    # specify flatten value whether "fc" or "cnn" model is used
+    flatten = True if config.model == "fc" else False
+
     # load MNIST test data
     test_x, test_y = load_mnist(is_train=False)
 
     # set data loaders
     train_loader = DataLoader(
-        dataset=MNISTDataset(train_x, train_y, device, flatten=True),
+        dataset=MNISTDataset(train_x, train_y, device, flatten=flatten),
         batch_size=config.batch_size,
         shuffle=True
     )
     valid_loader = DataLoader(
-        dataset=MNISTDataset(valid_x, valid_y, device, flatten=True),
+        dataset=MNISTDataset(valid_x, valid_y, device, flatten=flatten),
         batch_size=config.batch_size,
         shuffle=True
     )
     test_loader = DataLoader(
-        dataset=MNISTDataset(test_x, test_y, device, flatten=False),
+        dataset=MNISTDataset(test_x, test_y, device, flatten=flatten),
         batch_size=config.batch_size,
         shuffle=True
     )
