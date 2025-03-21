@@ -1,3 +1,6 @@
+from models.fc_model import FullyConnectedClassifier
+from models.cnn_model import ConvolutionalClassifier
+
 def get_grad_norm(parameters, norm_type=2):
     parameters = list(filter(lambda p: p.grad is not None, parameters))
 
@@ -25,3 +28,13 @@ def get_parameter_norm(parameters, norm_type=2):
         print(e)
 
     return total_norm
+
+def get_model(config):
+    if config.model == "fc":
+        model = FullyConnectedClassifier(28 ** 2, 10)
+    elif config.model == "cnn":
+        model = ConvolutionalClassifier(10)
+    else:
+        raise NotImplementedError("You need to specify model name.")
+
+    return model

@@ -14,3 +14,5 @@ use_batch_norm : True
 dropout_p : .3
 # steps to print standard output in the train/valid process
 verbose: 1
+# model name ["fc" or "cnn"]
+model: "fc"
