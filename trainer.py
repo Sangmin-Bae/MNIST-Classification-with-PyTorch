@@ -2,6 +2,7 @@ import numpy as np
 from copy import deepcopy
 
 import torch
+import torch.nn.utils as torch_utils
 
 from ignite.engine import Engine
 from ignite.engine import Events
@@ -48,6 +49,13 @@ class MyEngine(Engine):
 
         p_norm = float(get_parameter_norm(engine.model.parameters()))
         g_norm = float(get_grad_norm(engine.model.parameters()))
+
+        if engine.config.max_grad > 0:
+            torch_utils.clip_grad_norm_(
+                engine.model.parameters(),
+                engine.config.max_grad,
+                norm_type=2
+            )
 
         engine.optimizer.step()
 
